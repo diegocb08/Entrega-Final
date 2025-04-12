@@ -30,7 +30,7 @@ function agregarProducto(productoId) {
     const stockSelector = `#stock-${producto.nombre.toLowerCase()}`;
     const stockElement = document.querySelector(stockSelector);
     if (stockElement) {
-      stockElement.textContent = producto.stock;
+      stockElement.textContent = `Stock: ${producto.stock}`;
     }
   }
 }
@@ -64,6 +64,7 @@ function actualizarCarritoDom() {
     const accionCelda = document.createElement("td");
     const btnQuitar = document.createElement("button");
     btnQuitar.textContent = "Quitar";
+    btnQuitar.className = "btn-quitar";
 
     btnQuitar.addEventListener("click", function () {
       quitarProducto(producto.id);
@@ -118,7 +119,7 @@ function quitarProducto(productoId) {
       const stockSelector = `#stock-${producto.nombre.toLowerCase()}`;
       const stockElement = document.querySelector(stockSelector);
       if (stockElement) {
-        stockElement.textContent = producto.stock;
+        stockElement.textContent = `Stock: ${producto.stock}`;
       }
     }
 
@@ -140,6 +141,18 @@ function calcularTotalCarrito() {
 
 // Función para limpiar el carrito
 function limpiarCarrito(mostrarAlerta = true) {
+  if (carrito.length === 0) {
+    if (mostrarAlerta) {
+      Swal.fire({
+        title: "Carrito Vacío",
+        text: "El carrito ya está vacío",
+        icon: "info",
+        confirmButtonText: "Ok",
+      });
+    }
+    return;
+  }
+
   carrito.forEach((item) => {
     const producto = productos.find((p) => p.id === item.id);
     if (producto) {
@@ -149,7 +162,7 @@ function limpiarCarrito(mostrarAlerta = true) {
       const stockSelector = `#stock-${producto.nombre.toLowerCase()}`;
       const stockElement = document.querySelector(stockSelector);
       if (stockElement) {
-        stockElement.textContent = producto.stock;
+        stockElement.textContent = `Stock: ${producto.stock}`;
       }
 
       // Actualizar botón
@@ -175,10 +188,10 @@ function limpiarCarrito(mostrarAlerta = true) {
 
   if (mostrarAlerta) {
     Swal.fire({
-      title: '¡Listo!',
-      text: 'El carrito ha sido limpiado',
-      icon: 'success',
-      confirmButtonText: 'Ok'
+      title: "¡Listo!",
+      text: "El carrito ha sido limpiado",
+      icon: "success",
+      confirmButtonText: "Ok",
     });
   }
 }

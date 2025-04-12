@@ -16,61 +16,81 @@ async function cargarProductos() {
       productos = JSON.parse(productosGuardados);
     } else {
       // Si no hay datos en localStorage, cargar desde API
-      const response = await fetch("https://diegocb08.github.io/webcoder/productos.json");
+      const response = await fetch(
+        "https://diegocb08.github.io/webcoder/productos.json"
+      );
+      if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
       const data = await response.json();
       productos = data;
       localStorage.setItem("productos", JSON.stringify(data));
     }
 
-    // Una vez cargados los productos, generar la tabla
-    generarTablaProductos();
+    // Una vez cargados los productos, generar las tarjetas
+    generarTarjetasProductos();
     actualizarCarritoDom();
   } catch (error) {
     console.error("Error al cargar productos:", error);
   }
 }
 
-// Función para generar la tabla de productos desde el array
-function generarTablaProductos() {
-  const productosBody = document.getElementById("productos-body");
+// Función para generar las tarjetas de productos
+function generarTarjetasProductos() {
+  const productosGrid = document.getElementById("productos-grid");
 
-  productosBody.innerHTML = ""; // Limpiar contenido existente
+  productosGrid.innerHTML = ""; // Limpiar contenido existente
 
   productos.forEach((producto) => {
-    const fila = document.createElement("tr");
+    const card = document.createElement("div");
+    card.className = "producto-card";
 
-    // Columna: Nombre
-    const nombreCelda = document.createElement("td");
-    nombreCelda.id = `nombre-${producto.nombre.toLowerCase()}`;
-    nombreCelda.textContent = producto.nombre;
-    fila.appendChild(nombreCelda);
+    // Imagen del Producto
+    const img = document.createElement("img");
+    img.src = producto.imagenUrl;
+    img.alt = producto.nombre;
+    img.className = "producto-imagen";
+    card.appendChild(img);
 
-    // Columna: Precio
-    const precioCelda = document.createElement("td");
-    precioCelda.id = `precio-${producto.nombre.toLowerCase()}`;
-    precioCelda.innerHTML = `$${producto.precio}`;
-    fila.appendChild(precioCelda);
+    // Contenedor de información
+    const infoContainer = document.createElement("div");
+    infoContainer.className = "producto-info";
 
-    // Columna: Stock
-    const stockCelda = document.createElement("td");
-    stockCelda.id = `stock-${producto.nombre.toLowerCase()}`;
-    stockCelda.textContent = producto.stock;
-    fila.appendChild(stockCelda);
+    // Nombre del Producto
+    const nombre = document.createElement("h3");
+    nombre.className = "producto-nombre";
+    nombre.textContent = producto.nombre;
+    infoContainer.appendChild(nombre);
 
-    // Columna: Acción (botón agregar)
-    const accionCelda = document.createElement("td");
+    // Precio del Producto
+    const precio = document.createElement("p");
+    precio.className = "producto-precio";
+    precio.innerHTML = `$${producto.precio}`;
+    infoContainer.appendChild(precio);
+
+    // Stock del Producto
+    const stock = document.createElement("p");
+    stock.id = `stock-${producto.nombre.toLowerCase()}`;
+    stock.className = "producto-stock";
+    stock.textContent = `Stock: ${producto.stock}`;
+    infoContainer.appendChild(stock);
+
+    // Botón de Acción
     const btnAgregar = document.createElement("button");
+    btnAgregar.className = "producto-boton";
+    btnAgregar.setAttribute("data-id", producto.id);
     if (producto.stock <= 0) {
       btnAgregar.textContent = "Sin Stock";
+      btnAgregar.disabled = true;
     } else {
       btnAgregar.textContent = "Agregar al carrito";
+      btnAgregar.disabled = false;
     }
-    btnAgregar.setAttribute("data-id", producto.id);
-    btnAgregar.disabled = producto.stock <= 0;
-    accionCelda.appendChild(btnAgregar);
-    fila.appendChild(accionCelda);
+    infoContainer.appendChild(btnAgregar);
 
-    productosBody.appendChild(fila);
+    // Añadir el contenedor de información a la tarjeta
+    card.appendChild(infoContainer);
+
+    // Añadir la tarjeta completa al grid
+    productosGrid.appendChild(card);
   });
 
   // Agrego event listeners a los botones generados
@@ -104,10 +124,10 @@ function finalizarCompra() {
 
   if (carrito.length === 0) {
     Swal.fire({
-      title: 'Carrito Vacío',
-      text: 'No hay productos en el carrito.',
-      icon: 'warning',
-      confirmButtonText: 'Ok'
+      title: "Carrito Vacío",
+      text: "No hay productos en el carrito.",
+      icon: "warning",
+      confirmButtonText: "Ok",
     });
     return;
   }
@@ -120,10 +140,10 @@ function finalizarCompra() {
   limpiarCarrito(false); // Limpio el carrito sin mostrar el mensaje de "Carrito Vacio"
 
   Swal.fire({
-    title: '¡Compra Finalizada!',
+    title: "¡Compra Finalizada!",
     text: `Total: $${total}. Gracias por su compra.`,
-    icon: 'success',
-    confirmButtonText: 'Ok'
+    icon: "success",
+    confirmButtonText: "Ok",
   });
 }
 

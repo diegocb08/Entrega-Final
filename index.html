@@ -1,45 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="Estilos/style.css" />
-		<title>Tienda Online</title>
-	</head>
-	<body>
-		<h1>Tienda Online</h1>
-		<main class="main-container">
-			<div class="productos-container">
-				<h2>Productos Disponibles</h2>
-				<table id="productos-tabla">
-					<thead>
-						<tr>
-							<th>Producto</th>
-							<th>Precio</th>
-							<th>Stock</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-					<tbody id="productos-body"></tbody>
-				</table>
-			</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Estilos/style.css" />
+    <title>Tienda Online</title>
+  </head>
+  <body>
+    <h1>Tienda Online</h1>
+    <main class="main-container">
+      <div class="productos-container">
+        <h2>Productos Disponibles</h2>
+        <div id="productos-grid" class="productos-grid-container"></div>
+      </div>
 
-			<div class="carrito-container">
-				<h2>Carrito de Compras</h2>
-				<table id="carrito-tabla">
-					<thead>
-						<tr>
-							<th>Producto</th>
-							<th>Precio</th>
-							<th>Cantidad</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-			</div>
-		</main>
-		<script type="module" src="JS/main.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	</body>
+      <div class="carrito-container">
+        <h2>Carrito de Compras</h2>
+        <table id="carrito-tabla">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </main>
+    <script type="module" src="JS/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
 </html>
