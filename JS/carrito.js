@@ -173,7 +173,12 @@ function limpiarCarrito() {
   localStorage.setItem("carrito", JSON.stringify([]));
   localStorage.setItem("productos", JSON.stringify(productos));
 
-  alert("El carrito ha sido limpiado");
+  Swal.fire({
+    title: '¡Listo!',
+    text: 'El carrito ha sido limpiado',
+    icon: 'success',
+    confirmButtonText: 'Ok'
+  });
 }
 
 export {

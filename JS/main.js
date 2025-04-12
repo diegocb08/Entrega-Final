@@ -4,47 +4,35 @@ import {
   limpiarCarrito,
 } from "./carrito.js";
 
-// Listado de productos
-let productos = JSON.parse(localStorage.getItem("productos")) || [
-  {
-    nombre: "Agua",
-    precio: 1000,
-    stock: 5,
-    id: 1,
-  },
-  {
-    nombre: "Alfajor",
-    precio: 1500,
-    stock: 2,
-    id: 2,
-  },
-  {
-    nombre: "Gaseosa",
-    precio: 1200,
-    stock: 4,
-    id: 3,
-  },
-  {
-    nombre: "Vino",
-    precio: 5000,
-    stock: 0,
-    id: 4,
-  },
-  {
-    nombre: "Café",
-    precio: 2000,
-    stock: 3,
-    id: 5,
-  },
-];
+// Listado de productos, lo declaro vacío al principio y luego se carga desde la APIo desde localStorage
+let productos = [];
+
+// Función para cargar productos
+async function cargarProductos() {
+  try {
+    // Intento cargar desde localStorage primero
+    const productosGuardados = localStorage.getItem("productos");
+    if (productosGuardados) {
+      productos = JSON.parse(productosGuardados);
+    } else {
+      // Si no hay datos en localStorage, cargar desde API
+      const response = await fetch("https://diegocb08.github.io/webcoder/productos.json");
+      const data = await response.json();
+      productos = data;
+      localStorage.setItem("productos", JSON.stringify(data));
+    }
+
+    // Una vez cargados los productos, generar la tabla
+    generarTablaProductos();
+    actualizarCarritoDom();
+  } catch (error) {
+    console.error("Error al cargar productos:", error);
+  }
+}
 
 // Función para generar la tabla de productos desde el array
 function generarTablaProductos() {
   const productosBody = document.getElementById("productos-body");
-  if (!productosBody) {
-    console.error("No se encontró el elemento con ID 'productos-body'");
-    return;
-  }
 
   productosBody.innerHTML = ""; // Limpiar contenido existente
 
@@ -115,7 +103,12 @@ function finalizarCompra() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
   if (carrito.length === 0) {
-    alert("No hay productos en el carrito");
+    Swal.fire({
+      title: 'Carrito Vacío',
+      text: 'No hay productos en el carrito.',
+      icon: 'warning',
+      confirmButtonText: 'Ok'
+    });
     return;
   }
 
@@ -128,12 +121,16 @@ function finalizarCompra() {
 
   actualizarCarritoDom();
 
-  alert(`Compra finalizada, Total: $${total}\nGracias por su compra.`);
+  Swal.fire({
+    title: '¡Compra Finalizada!',
+    text: `Total: $${total}. Gracias por su compra.`,
+    icon: 'success',
+    confirmButtonText: 'Ok'
+  });
 }
 
 // Inicializar la aplicación
-generarTablaProductos();
-actualizarCarritoDom();
+cargarProductos();
 
 // Agregar botones de limpiar carrito y finalizar compra al DOM
 const carritoContainer = document.querySelector(".carrito-container");
