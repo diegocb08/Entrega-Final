@@ -33,6 +33,11 @@ h2 {
   flex-grow: 2;
 }
 
+.carrito-container {
+  position: sticky;
+  top: 0;
+}
+
 /* Estilos para el grid de productos */
 .productos-grid-container {
   display: grid;
