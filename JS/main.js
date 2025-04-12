@@ -117,9 +117,7 @@ function finalizarCompra() {
     return sum + item.precio * item.cantidad;
   }, 0);
 
-  localStorage.setItem("carrito", JSON.stringify([]));
-
-  actualizarCarritoDom();
+  limpiarCarrito(false); // Limpio el carrito sin mostrar el mensaje de "Carrito Vacio"
 
   Swal.fire({
     title: '¡Compra Finalizada!',

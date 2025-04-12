@@ -139,7 +139,7 @@ function calcularTotalCarrito() {
 }
 
 // Función para limpiar el carrito
-function limpiarCarrito() {
+function limpiarCarrito(mostrarAlerta = true) {
   carrito.forEach((item) => {
     const producto = productos.find((p) => p.id === item.id);
     if (producto) {
@@ -173,12 +173,14 @@ function limpiarCarrito() {
   localStorage.setItem("carrito", JSON.stringify([]));
   localStorage.setItem("productos", JSON.stringify(productos));
 
-  Swal.fire({
-    title: '¡Listo!',
-    text: 'El carrito ha sido limpiado',
-    icon: 'success',
-    confirmButtonText: 'Ok'
-  });
+  if (mostrarAlerta) {
+    Swal.fire({
+      title: '¡Listo!',
+      text: 'El carrito ha sido limpiado',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    });
+  }
 }
 
 export {
