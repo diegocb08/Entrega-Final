@@ -189,3 +189,60 @@ th {
     width: 100%;
   }
 }
+
+/* Estilos para la sección de filtros */
+.filtro-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.filtro-container label {
+  font-weight: 600;
+  color: #333;
+  margin-right: 10px;
+}
+
+.filtro-container input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.filtro-container input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.filtro-container input[type="text"] {
+  min-width: 200px;
+}
+
+.filtro-container input[type="number"] {
+  min-width: 200px;
+}
+
+/* Ajuste responsive para los filtros */
+@media (max-width: 768px) {
+  .filtro-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtro-container label {
+    margin-bottom: 5px;
+  }
+
+  .filtro-container input {
+    width: 100%;
+  }
+}

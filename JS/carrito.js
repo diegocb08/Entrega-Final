@@ -17,20 +17,19 @@ function agregarProducto(productoId) {
     }
     actualizarCarritoDom();
 
-    // Actualizo el botón según el stock disponible
+    // Actualizar el stock en el DOM
+    const stockElement = document.querySelector(`#stock-${productoId}`);
+    if (stockElement) {
+      stockElement.textContent = `Stock: ${producto.stock}`;
+    }
+
+    // Actualizar el botón según el stock disponible
     const btnAgregar = document.querySelector(
       `button[data-id="${productoId}"]`
     );
     if (btnAgregar && producto.stock <= 0) {
       btnAgregar.disabled = true;
       btnAgregar.textContent = "Sin Stock";
-    }
-
-    // También actualiza la visualización del stock en la tabla de productos
-    const stockSelector = `#stock-${producto.nombre.toLowerCase()}`;
-    const stockElement = document.querySelector(stockSelector);
-    if (stockElement) {
-      stockElement.textContent = `Stock: ${producto.stock}`;
     }
   }
 }
@@ -159,8 +158,7 @@ function limpiarCarrito(mostrarAlerta = true) {
       producto.stock += item.cantidad;
 
       // Actualizar el stock mostrado
-      const stockSelector = `#stock-${producto.nombre.toLowerCase()}`;
-      const stockElement = document.querySelector(stockSelector);
+      const stockElement = document.querySelector(`#stock-${producto.id}`);
       if (stockElement) {
         stockElement.textContent = `Stock: ${producto.stock}`;
       }
