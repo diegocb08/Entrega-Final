@@ -260,6 +260,7 @@ th {
   flex-wrap: wrap;
   gap: 15px;
   align-items: center;
+  justify-content: center;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -286,11 +287,11 @@ th {
 }
 
 .filtro-container input[type="text"] {
-  min-width: 200px;
+  min-width: 250px;
 }
 
 .filtro-container input[type="number"] {
-  min-width: 200px;
+  min-width: 250px;
 }
 
 /* Estilos para el botón de limpiar filtros */
