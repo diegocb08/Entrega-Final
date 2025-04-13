@@ -1,9 +1,3 @@
-import {
-  agregarProducto,
-  actualizarCarritoDom,
-  limpiarCarrito,
-} from "./carrito.js";
-
 // Importar funciones de filtrado
 import {
   filtrarPorNombre,
@@ -13,8 +7,45 @@ import {
   limpiarFiltros,
 } from "./filtros.js";
 
+// Importar funciones del carrito
+import {
+  agregarProducto,
+  actualizarCarritoDom,
+  limpiarCarrito,
+} from "./carrito.js";
+
 // Listado de productos, lo declaro vacío al principio y luego se carga desde la API o desde localStorage
 let productos = [];
+
+// ===== FUNCIONES DE INICIALIZACIÓN =====
+
+// Función para cargar productos
+async function cargarProductos() {
+  try {
+    // Intento cargar desde localStorage primero
+    const productosGuardados = localStorage.getItem("productos");
+    if (productosGuardados) {
+      productos = JSON.parse(productosGuardados);
+    } else {
+      // Si no hay datos en localStorage, cargar desde API
+      const response = await fetch(
+        "https://diegocb08.github.io/webcoder/productos.json"
+      );
+      if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+      const data = await response.json();
+      productos = data;
+      localStorage.setItem("productos", JSON.stringify(data));
+    }
+
+    // Mostrar todos los productos al cargar
+    mostrarProductos(productos);
+    actualizarCarritoDom();
+  } catch (error) {
+    console.error("Error al cargar productos:", error);
+  }
+}
+
+// ===== FUNCIONES DE UI =====
 
 // Función para mostrar productos en el grid
 function mostrarProductos(productosAMostrar) {
@@ -99,6 +130,8 @@ function mostrarProductos(productosAMostrar) {
   });
 }
 
+// ===== FUNCIONES DE FILTRADO =====
+
 // Función para manejar el filtrado
 function manejarFiltros() {
   const filtroNombre = document.getElementById("filtro-texto").value;
@@ -119,39 +152,7 @@ function manejarFiltros() {
   actualizarProductosFiltrados(productosFiltrados);
 }
 
-// Event listeners para los filtros
-document
-  .getElementById("filtro-texto")
-  .addEventListener("input", manejarFiltros);
-document
-  .getElementById("filto-numero")
-  .addEventListener("input", manejarFiltros);
-
-// Función para cargar productos
-async function cargarProductos() {
-  try {
-    // Intento cargar desde localStorage primero
-    const productosGuardados = localStorage.getItem("productos");
-    if (productosGuardados) {
-      productos = JSON.parse(productosGuardados);
-    } else {
-      // Si no hay datos en localStorage, cargar desde API
-      const response = await fetch(
-        "https://diegocb08.github.io/webcoder/productos.json"
-      );
-      if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-      const data = await response.json();
-      productos = data;
-      localStorage.setItem("productos", JSON.stringify(data));
-    }
-
-    // Mostrar todos los productos al cargar
-    mostrarProductos(productos);
-    actualizarCarritoDom();
-  } catch (error) {
-    console.error("Error al cargar productos:", error);
-  }
-}
+// ===== FUNCIONES DE COMPRA =====
 
 // Función para finalizar la compra
 async function finalizarCompra() {
@@ -192,6 +193,9 @@ async function finalizarCompra() {
     // Actualizamos la visualización de los productos
     mostrarProductos(productos);
 
+    // Limpio los filtros
+    limpiarFiltros();
+
     // Mostramos el mensaje de éxito
     await Swal.fire({
       title: "¡Compra Exitosa!",
@@ -202,13 +206,20 @@ async function finalizarCompra() {
   }
 }
 
+// ===== INICIALIZACIÓN DE EVENT LISTENERS =====
+
+// Event listeners para los filtros
+document
+  .getElementById("filtro-texto")
+  .addEventListener("input", manejarFiltros);
+document
+  .getElementById("filto-numero")
+  .addEventListener("input", manejarFiltros);
+
 // Event listener para el botón de limpiar filtros
 document
   .getElementById("limpiar-filtros")
   .addEventListener("click", limpiarFiltros);
-
-// Inicializar la aplicación
-cargarProductos();
 
 // Agregar botones de limpiar carrito y finalizar compra al DOM
 const carritoContainer = document.querySelector(".carrito-container");
@@ -231,5 +242,10 @@ if (carritoContainer) {
 
   carritoContainer.appendChild(botonesContainer);
 }
+
+// ===== INICIALIZACIÓN DE LA APLICACIÓN =====
+
+// Inicializar la aplicación
+cargarProductos();
 
 export { productos };

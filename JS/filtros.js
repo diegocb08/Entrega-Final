@@ -1,5 +1,7 @@
 import { productos } from "./main.js";
 
+// ===== FUNCIONES DE FILTRADO =====
+
 // Función para filtrar por nombre
 export function filtrarPorNombre(filtroUsuario) {
   return productos.filter((producto) =>
@@ -20,6 +22,8 @@ export function aplicarFiltros(filtroNombre, precioMaximo) {
       producto.precio <= precioMaximo
   );
 }
+
+// ===== FUNCIONES DE UI =====
 
 // Función para actualizar el DOM con los productos filtrados
 export function actualizarProductosFiltrados(productosFiltrados) {
@@ -90,6 +94,8 @@ export function actualizarProductosFiltrados(productosFiltrados) {
     });
   });
 }
+
+// ===== FUNCIONES DE UTILIDAD =====
 
 // Función para limpiar los filtros
 export function limpiarFiltros() {

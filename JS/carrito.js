@@ -2,6 +2,17 @@ import { productos } from "./main.js";
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
+// ===== FUNCIONES AUXILIARES =====
+
+// Función que calcula el total del carrito
+function calcularTotalCarrito() {
+  return carrito.reduce((total, producto) => {
+    return total + producto.precio * producto.cantidad;
+  }, 0);
+}
+
+// ===== FUNCIONES PRINCIPALES =====
+
 // Función para agregar productos al carrito
 function agregarProducto(productoId) {
   const producto = productos.find((p) => p.id === productoId);
@@ -129,13 +140,6 @@ function quitarProducto(productoId) {
 
     actualizarCarritoDom();
   }
-}
-
-// Función que calcula el total del carrito
-function calcularTotalCarrito() {
-  return carrito.reduce((total, producto) => {
-    return total + producto.precio * producto.cantidad;
-  }, 0);
 }
 
 // Función para limpiar el carrito
