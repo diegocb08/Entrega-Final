@@ -126,8 +126,7 @@ function quitarProducto(productoId) {
       }
 
       // Actualizar el stock mostrado
-      const stockSelector = `#stock-${producto.nombre.toLowerCase()}`;
-      const stockElement = document.querySelector(stockSelector);
+      const stockElement = document.querySelector(`#stock-${productoId}`);
       if (stockElement) {
         stockElement.textContent = `Stock: ${producto.stock}`;
       }
