@@ -189,66 +189,6 @@ th {
   background-color: #27ae60;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-
-  .main-container {
-    flex-direction: column;
-    margin-top: 10px;
-    gap: 10px;
-  }
-
-  .productos-container,
-  .carrito-container {
-    width: 100%;
-    min-width: unset;
-    padding: 15px;
-  }
-
-  .carrito-container {
-    top: 160px;
-    height: calc(100vh - 160px);
-  }
-
-  .productos-grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-  }
-
-  .filtro-container {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 15px;
-    margin: 10px 0;
-  }
-
-  .filtro-container label {
-    margin-bottom: 5px;
-  }
-
-  .filtro-container input {
-    width: 100%;
-    min-width: unset;
-  }
-
-  .producto-card {
-    min-width: unset;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 5px;
-  }
-
-  .productos-grid-container {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Estilos para la sección de filtros */
 .filtro-container {
   background-color: #f8f9fa;
@@ -312,4 +252,65 @@ th {
 
 .btn-limpiar-filtros:active {
   background-color: #545b62;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .main-container {
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .productos-container,
+  .carrito-container {
+    width: 100%;
+    min-width: unset;
+    padding: 15px;
+  }
+
+  .carrito-container {
+    top: 160px;
+    height: calc(100vh - 160px);
+  }
+
+  .productos-grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .filtro-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px;
+    margin: 10px 0;
+    position: relative;
+  }
+
+  .filtro-container label {
+    margin-bottom: 5px;
+  }
+
+  .filtro-container input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .producto-card {
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 5px;
+  }
+
+  .productos-grid-container {
+    grid-template-columns: 1fr;
+  }
 }
