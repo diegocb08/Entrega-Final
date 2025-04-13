@@ -154,7 +154,7 @@ async function cargarProductos() {
 }
 
 // Función para finalizar la compra
-function finalizarCompra() {
+async function finalizarCompra() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
   if (carrito.length === 0) {
@@ -172,14 +172,34 @@ function finalizarCompra() {
     return sum + item.precio * item.cantidad;
   }, 0);
 
-  limpiarCarrito(false); // Limpio el carrito sin mostrar el mensaje de "Carrito Vacio"
-
-  Swal.fire({
-    title: "¡Compra Finalizada!",
-    text: `Total: $${total}. Gracias por su compra.`,
-    icon: "success",
-    confirmButtonText: "Ok",
+  // Mostrar confirmación antes de finalizar
+  const result = await Swal.fire({
+    title: "Confirmar Compra",
+    text: `El total de tu compra es: $${total}`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#2ecc71",
+    cancelButtonColor: "#3498db",
+    confirmButtonText: "Sí, finalizar compra",
+    cancelButtonText: "Seguir comprando",
   });
+
+  // Si el usuario confirma, finalizar la compra
+  if (result.isConfirmed) {
+    // Primero limpiamos el carrito y esperamos a que termine
+    await limpiarCarrito(false, false);
+
+    // Actualizamos la visualización de los productos
+    mostrarProductos(productos);
+
+    // Mostramos el mensaje de éxito
+    await Swal.fire({
+      title: "¡Compra Exitosa!",
+      text: `Total pagado: $${total}. ¡Gracias por tu compra!`,
+      icon: "success",
+      confirmButtonText: "Ok",
+    });
+  }
 }
 
 // Event listener para el botón de limpiar filtros

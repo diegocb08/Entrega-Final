@@ -139,7 +139,7 @@ function calcularTotalCarrito() {
 }
 
 // Función para limpiar el carrito
-function limpiarCarrito(mostrarAlerta = true) {
+async function limpiarCarrito(mostrarAlerta = true, confirmarLimpieza = true) {
   if (carrito.length === 0) {
     if (mostrarAlerta) {
       Swal.fire({
@@ -152,45 +152,59 @@ function limpiarCarrito(mostrarAlerta = true) {
     return;
   }
 
-  carrito.forEach((item) => {
-    const producto = productos.find((p) => p.id === item.id);
-    if (producto) {
-      producto.stock += item.cantidad;
+  let deberiaLimpiar = true;
 
-      // Actualizar el stock mostrado
-      const stockElement = document.querySelector(`#stock-${producto.id}`);
-      if (stockElement) {
-        stockElement.textContent = `Stock: ${producto.stock}`;
-      }
-
-      // Actualizar botón
-      const btnAgregar = document.querySelector(
-        `button[data-id="${producto.id}"]`
-      );
-      if (btnAgregar) {
-        btnAgregar.disabled = false;
-        btnAgregar.textContent = "Agregar al carrito";
-      }
-    }
-  });
-
-  // Vaciar el carrito
-  carrito = [];
-
-  // Actualizar DOM
-  actualizarCarritoDom();
-
-  // Guardar en localStorage
-  localStorage.setItem("carrito", JSON.stringify([]));
-  localStorage.setItem("productos", JSON.stringify(productos));
-
-  if (mostrarAlerta) {
-    Swal.fire({
-      title: "¡Listo!",
-      text: "El carrito ha sido limpiado",
-      icon: "success",
-      confirmButtonText: "Ok",
+  if (confirmarLimpieza) {
+    // Mostrar confirmación antes de limpiar
+    const result = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Se eliminarán todos los productos del carrito",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e74c3c",
+      cancelButtonColor: "#3498db",
+      confirmButtonText: "Sí, limpiar carrito",
+      cancelButtonText: "Cancelar",
     });
+    deberiaLimpiar = result.isConfirmed;
+  }
+
+  // Si el usuario confirma o no se requiere confirmación, limpiar el carrito
+  if (deberiaLimpiar) {
+    carrito.forEach((item) => {
+      const producto = productos.find((p) => p.id === item.id);
+      if (producto) {
+        producto.stock += item.cantidad;
+
+        // Actualizar el stock en el DOM
+        const stockElement = document.querySelector(`#stock-${producto.id}`);
+        if (stockElement) {
+          stockElement.textContent = `Stock: ${producto.stock}`;
+        }
+
+        // Actualizar el botón
+        const btnAgregar = document.querySelector(
+          `button[data-id="${producto.id}"]`
+        );
+        if (btnAgregar) {
+          btnAgregar.disabled = false;
+          btnAgregar.textContent = "Agregar al carrito";
+        }
+      }
+    });
+
+    carrito = [];
+    actualizarCarritoDom();
+    localStorage.setItem("carrito", JSON.stringify([]));
+
+    if (mostrarAlerta) {
+      Swal.fire({
+        title: "¡Listo!",
+        text: "El carrito ha sido limpiado",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+    }
   }
 }
 
