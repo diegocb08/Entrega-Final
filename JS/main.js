@@ -174,7 +174,7 @@ async function finalizarCompra() {
 
   // Mostrar confirmación antes de finalizar
   const result = await Swal.fire({
-    title: "Confirmar Compra",
+    title: "¿Desea confirmar la compra?",
     text: `El total de tu compra es: $${total}`,
     icon: "question",
     showCancelButton: true,
