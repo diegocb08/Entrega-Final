@@ -10,6 +10,7 @@ import {
   filtrarPorPrecio,
   aplicarFiltros,
   actualizarProductosFiltrados,
+  limpiarFiltros,
 } from "./filtros.js";
 
 // Listado de productos, lo declaro vacío al principio y luego se carga desde la API o desde localStorage
@@ -180,6 +181,11 @@ function finalizarCompra() {
     confirmButtonText: "Ok",
   });
 }
+
+// Event listener para el botón de limpiar filtros
+document
+  .getElementById("limpiar-filtros")
+  .addEventListener("click", limpiarFiltros);
 
 // Inicializar la aplicación
 cargarProductos();

@@ -90,3 +90,13 @@ export function actualizarProductosFiltrados(productosFiltrados) {
     });
   });
 }
+
+// Función para limpiar los filtros
+export function limpiarFiltros() {
+  // Limpiar los inputs
+  document.getElementById("filtro-texto").value = "";
+  document.getElementById("filto-numero").value = "";
+
+  // Mostrar todos los productos
+  actualizarProductosFiltrados(productos);
+}
