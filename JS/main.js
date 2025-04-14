@@ -41,7 +41,13 @@ async function cargarProductos() {
     mostrarProductos(productos);
     actualizarCarritoDom();
   } catch (error) {
-    console.error("Error al cargar productos:", error);
+    Swal.fire({
+      title: "Error al cargar productos",
+      text: "No se pudieron cargar los productos. Por favor, inténtalo de nuevo más tarde.",
+      icon: "error",
+      confirmButtonText: "Entendido",
+    });
+    console.error("Error detallado al cargar productos:", error); // Entiendo que pidieron eliminar logs, pero creo que console error es útil para ver el tipo de error que ocurr
   }
 }
 
